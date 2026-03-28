@@ -1,6 +1,6 @@
 # Dynmap®  - dynamic web maps for Minecraft servers
 
-# Updated content of the dynmap project
+Documentation is available in the doc folder, at the root of the project.
 
 --------------------------------
 
@@ -8,7 +8,6 @@
 
 # Jump around the README
 - [Dynmap®  - dynamic web maps for Minecraft servers](#dynmap----dynamic-web-maps-for-minecraft-servers)
-- [Updated content of the dynmap project](#updated-content-of-the-dynmap-project)
 - [Jump around the README](#jump-around-the-readme)
 - [How to build](#how-to-build)
 - [What platforms are supported?](#what-platforms-are-supported)
