@@ -6,14 +6,6 @@ archivesBaseName = "Dynmap"
 version = parent.version
 group = parent.group
 
-eclipse {
-    project {
-        name = "Dynmap(Fabric-1.21.6)"
-    }
-}
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaLanguageVersion.of(21) // Need this here so eclipse task generates correctly.
-
 configurations {
     shadow
     implementation.extendsFrom(shadow)
