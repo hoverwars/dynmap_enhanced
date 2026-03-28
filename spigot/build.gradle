@@ -1,12 +1,5 @@
 
 description = 'dynmap'
-
-eclipse {
-    project {
-        name = "Dynmap(Spigot)"
-    }
-}
-
 repositories {
     maven {
         url 'https://jitpack.io'
@@ -16,13 +9,12 @@ repositories {
     }
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-
 dependencies {
     implementation('org.bukkit:bukkit:1.10.2-R0.1-SNAPSHOT') { transitive = false }
     compileOnly('com.nijikokun.bukkit:Permissions:3.1.6')  { transitive = false }
     compileOnly('me.lucko.luckperms:luckperms-api:4.3')  { transitive = false }
     compileOnly('net.luckperms:api:5.0')  { transitive = false }
+    compileOnly('com.google.guava:guava:33.5.0-jre')
     compileOnly('com.github.MilkBowl:VaultAPI:1.7') { transitive = false }
     compileOnly('net.skinsrestorer:skinsrestorer-api:14.2.+')  { transitive = false }
     implementation(project(":dynmap-api"))  { transitive = false }
@@ -35,12 +27,6 @@ dependencies {
     compileOnly('com.googlecode.json-simple:json-simple:1.1.1') { transitive = false }
     compileOnly('com.google.code.gson:gson:2.8.9') { transitive = false }
     implementation(project(':bukkit-helper')) {
-        transitive = false
-    }
-    implementation(project(':bukkit-helper-121-6')) {
-        transitive = false
-    }
-    implementation(project(':bukkit-helper-121-10')) {
         transitive = false
     }
     implementation(project(':bukkit-helper-121-11')) {
@@ -69,8 +55,6 @@ shadowJar {
         include(dependency(':dynmap-api'))
         include(dependency(":DynmapCore"))
         include(dependency(':bukkit-helper'))
-        include(dependency(':bukkit-helper-121-6'))
-        include(dependency(':bukkit-helper-121-10'))
         include(dependency(':bukkit-helper-121-11'))
     }
     relocate('org.bstats', 'org.dynmap.bstats')

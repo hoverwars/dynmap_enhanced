@@ -43,10 +43,10 @@ public class Helper {
             else if (v.contains("(MC: 1.21.6") || v.contains("(MC: 1.21.7") || v.contains("(MC: 1.21.8")) {
 	            BukkitVersionHelper.helper = loadVersionHelper("org.dynmap.bukkit.helper.v121_6.BukkitVersionHelperSpigot121_6");
             }
-            else if (v.contains("(MC: 1.21.9)") || v.contains("(MC: 1.21.10)")) {
+            else if (v.contains("(MC: 1.21.9)") || v.contains("(MC: 1.21.10)") || v.contains("(MC: 1.21.9 Unobfuscated)") || v.contains("(MC: 1.21.10 Unobfuscated)")) {
 	            BukkitVersionHelper.helper = loadVersionHelper("org.dynmap.bukkit.helper.v121_10.BukkitVersionHelperSpigot121_10");
             }
-            else if (v.contains("(MC: 1.21.11)")) {
+            else if (v.contains("(MC: 1.21.11)") || v.contains("(MC: 1.21.11 Unobfuscated)")) {
 	            BukkitVersionHelper.helper = loadVersionHelper("org.dynmap.bukkit.helper.v121_11.BukkitVersionHelperSpigot121_11");
             }
             else {

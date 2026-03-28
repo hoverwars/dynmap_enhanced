@@ -1,13 +1,22 @@
 # Dynmap®  - dynamic web maps for Minecraft servers
 
+# Updated content of the dynmap project
+
+--------------------------------
+
+**__Legacy README content__ FROM here**
+
 # Jump around the README
-* [How to build](#how-to-build)
-* [What platforms are supported?](#what-platforms-are-supported)
-* [Data Storage](#data-storage)
-* [Contributing to Dynmap's Code](#contributing-to-dynmaps-code)
-* [Porting, Supporting Other Platforms, Customized Dynmap Builds](#porting-supporting-other-platforms-customized-dynmap-builds)
-* [Where to go for questions and discussions](#where-to-go-for-questions-and-discussions)
-* [Where to go to make donations](#where-to-go-to-make-donations)
+- [Dynmap®  - dynamic web maps for Minecraft servers](#dynmap----dynamic-web-maps-for-minecraft-servers)
+- [Updated content of the dynmap project](#updated-content-of-the-dynmap-project)
+- [Jump around the README](#jump-around-the-readme)
+- [How to build](#how-to-build)
+- [What platforms are supported?](#what-platforms-are-supported)
+- [Data Storage](#data-storage)
+- [Contributing to Dynmap's Code](#contributing-to-dynmaps-code)
+- [Porting, Supporting Other Platforms, Customized Dynmap Builds](#porting-supporting-other-platforms-customized-dynmap-builds)
+- [Where to go for questions and discussions](#where-to-go-for-questions-and-discussions)
+- [Where to go to make donations](#where-to-go-to-make-donations)
 # How to build
 Dynmap 3.x+ uses Gradle v8.7 for building support for all platforms, with all resulting artifacts produced in the /targets directory.  Due to Minecraft 1.18.x+ requirements, the developer's
 default JDK must be a JDK 21 version - older versions will still be compiled
