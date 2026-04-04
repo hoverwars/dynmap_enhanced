@@ -25,6 +25,7 @@ texturefile:id=copperchest,filename=assets/minecraft/textures/entity/chest/coppe
 texturefile:id=copperchest_exposed,filename=assets/minecraft/textures/entity/chest/copper_exposed.png,format=CHEST
 texturefile:id=copperchest_wheathered,filename=assets/minecraft/textures/entity/chest/copper_weathered.png,format=CHEST
 texturefile:id=copperchest_oxidized,filename=assets/minecraft/textures/entity/chest/copper_oxidized.png,format=CHEST
+
 texturefile:id=bigchest,filename=assets/minecraft/textures/entity/chest/normal_double.png,format=BIGCHEST
 texturefile:id=sign,filename=assets/minecraft/textures/entity/sign.png,format=SIGN
 texturefile:id=oak_sign,filename=assets/minecraft/textures/entity/signs/oak.png,format=SIGN
