@@ -1,10 +1,6 @@
 
 description = 'bukkit-helper-1.21.11'
 
-// Ensure application is buildable using java 17 or above. 
-sourceCompatibility = 17
-targetCompatibility = 17
-
 dependencies {
   implementation project(':bukkit-helper')
   implementation project(':dynmap-api')
