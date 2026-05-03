@@ -18,7 +18,9 @@ After creating this new gradle sub project, you should register it inside the ro
 - Open `settings.gradle`.
   - Add the appropriate include section: `include :bukkit-helper-<version>` 
   - Add the appropriate project section: `project(':bukkit-helper-<version>').projectDir = "$rootDir/<path_to_the_project>" as File`
-- Open `build.gradle` of the spigot project. Copy the project include from the last bukkit version. 
+- Open `build.gradle` of the spigot project. 
+  - Copy the project include from the last bukkit version. 
+  - Add the `include(dependency(...))` line.
 - Update the `Helper.java` class inside the Spigot project. Follow the existing structure to ensure the right version is loaded. You can find the right version naming by starting your minecraft server.
 
 ## Implement the bukkit-helper version
