@@ -1,4 +1,4 @@
-package org.dynmap.bukkit.helper.v26_1_2;
+package org.dynmap.bukkit.helper.v26_3;
 
 import org.bukkit.*;
 import org.bukkit.craftbukkit.CraftChunk;
@@ -63,7 +63,7 @@ import java.util.Map;
 /**
  * Helper for isolation of bukkit version specific issues
  */
-public class BukkitVersionHelperSpigot26_1_2 extends BukkitVersionHelper {
+public class BukkitVersionHelperSpigot26_3 extends BukkitVersionHelper {
 
 	@Override
 	public boolean isUnsafeAsync() {
@@ -195,7 +195,7 @@ public class BukkitVersionHelperSpigot26_1_2 extends BukkitVersionHelper {
 	 */
 	@Override
 	public MapChunkCache getChunkCache(BukkitWorld dw, List<DynmapChunk> chunks) {
-		MapChunkCache26_1_2 c = new MapChunkCache26_1_2(gencache);
+		MapChunkCache26_3 c = new MapChunkCache26_3(gencache);
 		c.setChunks(dw, chunks);
 		return c;
 	}
