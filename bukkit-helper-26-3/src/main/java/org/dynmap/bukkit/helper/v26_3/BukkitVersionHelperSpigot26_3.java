@@ -171,6 +171,7 @@ public class BukkitVersionHelperSpigot26_3 extends BukkitVersionHelper {
 			//Log.info("statename=" + bname + "[" + sb + "], lightAtten=" + lightAtten);
 			// Fill in base attributes
 			bld.setBaseState(lastbs).setStateIndex(idx).setBlockName(bname).setStateName(sb).setAttenuatesLight(lightAtten);
+			if (bd == b.defaultBlockState()) { bld.setDefaultState(); }
 			if (bd.isSolid()) { bld.setSolid(); }
 			if (bd.isAir()) { bld.setAir(); }
 			if (bd.is(BlockTags.OVERWORLD_NATURAL_LOGS)) { bld.setLog(); }

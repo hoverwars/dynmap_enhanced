@@ -1144,7 +1144,44 @@ public abstract class GenericMapChunkCache extends MapChunkCache {
 	}
 
 	private static final String litStates[] = { "light", "spawn", "heightmaps", "full" };
-	
+
+	/**
+	 * Resolve a single block_states.palette entry to a DynmapBlockState.
+	 * Through MC 26.2, each entry is a compound: {Name:"...", Properties:{...}}.
+	 * As of MC 26.3, BlockState.FULL_CODEC serializes via Codec.either(registry-name-codec, dispatch-codec):
+	 * a block at its default state is written as a bare string (e.g. "minecraft:stone"), while a block with
+	 * non-default properties is written as a compound keyed by lowercase "id"/"properties" instead of "Name"/"Properties".
+	 */
+	private static DynmapBlockState resolvePaletteEntry(GenericNBTList plist, int pi) {
+		GenericNBTCompound tc = plist.getCompound(pi);
+		String pname;
+		String propKey;
+		if (tc.contains("Name")) {
+			pname = tc.getString("Name");
+			propKey = "Properties";
+		}
+		else if (tc.contains("id")) {
+			pname = tc.getString("id");
+			propKey = "properties";
+		}
+		else {
+			// Bare-string palette entry: block at its default state (MC 26.3+).
+			// NOT the same as getBaseStateByName's state index 0, which is just registration order.
+			return DynmapBlockState.getDefaultStateByName(plist.getString(pi));
+		}
+		if (tc.contains(propKey)) {
+			StringBuilder statestr = new StringBuilder();
+			GenericNBTCompound prop = tc.getCompound(propKey);
+			for (String pid : prop.getAllKeys()) {
+				if (statestr.length() > 0) statestr.append(',');
+				statestr.append(pid).append('=').append(prop.getAsString(pid));
+			}
+			DynmapBlockState st = DynmapBlockState.getStateByNameAndState(pname, statestr.toString());
+			if (st != null) return st;
+		}
+		return DynmapBlockState.getBaseStateByName(pname);
+	}
+
 	public GenericChunk parseChunkFromNBT(GenericNBTCompound orignbt) {
 		GenericNBTCompound nbt = orignbt;
 		if ((nbt != null) && nbt.contains("Level", GenericNBTCompound.TAG_COMPOUND)) {
@@ -1265,23 +1302,7 @@ public abstract class GenericMapChunkCache extends MapChunkCache {
             		GenericNBTList plist = block_states.getList("palette", GenericNBTCompound.TAG_COMPOUND);
             		palette = new DynmapBlockState[plist.size()];
             		for (int pi = 0; pi < plist.size(); pi++) {
-            			GenericNBTCompound tc = plist.getCompound(pi);
-            			String pname = tc.getString("Name");
-            			if (tc.contains("Properties")) {
-            				StringBuilder statestr = new StringBuilder();
-            				GenericNBTCompound prop = tc.getCompound("Properties");
-            				for (String pid : prop.getAllKeys()) {
-            					if (statestr.length() > 0) statestr.append(',');
-            					statestr.append(pid).append('=').append(prop.getAsString(pid));
-            				}
-            				palette[pi] = DynmapBlockState.getStateByNameAndState(pname, statestr.toString());
-            			}
-            			if (palette[pi] == null) {
-            				palette[pi] = DynmapBlockState.getBaseStateByName(pname);
-            			}
-            			if (palette[pi] == null) {
-            				palette[pi] = DynmapBlockState.AIR;
-            			}
+            			palette[pi] = resolvePaletteEntry(plist, pi);
             		}
         			GenericBitStorage db = null;
         			DataBitsPacked dbp = null;
