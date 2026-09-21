@@ -43,7 +43,10 @@ commands:
            /<command> del-id-for-ip <playerid> <ipaddress> - Delete player ID from given IP address
            /<command> webregister - Start registration process for creating web login account
            /<command> url - Returns public URL for dynmap, if published
-                       
+           /<command> debugblocks - Debug/testing: place every block state Dynmap knows about in a grid on your current flat world (asks for confirmation)
+           /<command> debugblocks confirm - Confirm and execute a pending debugblocks request
+           /<command> debugblocks cancel - Cancel a pending debugblocks request
+
   dmarker:
     description: Manipulate map markers
     usage: |
@@ -128,7 +131,7 @@ commands:
     description: Map export commands
     usage: |
            /<command> shader <shadername> - Export material library for shader <shadername>
-           
+
 permissions:
   dynmap.*:
     description: Gives access to all dynmap functions
@@ -195,6 +198,7 @@ permissions:
       dynmap.dmap.shaderlist: true
       dynmap.dmap.lightinglist: true
       dynmap.playermarkers.seeall: true
+      dynmap.debug.fillallblocks: true
   dynmap.render:
     description: Allows /dynmap render command
     default: true
@@ -395,4 +399,7 @@ permissions:
     default: true
   dynmap.playermarkers.seeall:
     description: Allow all players to be seen by user on web UI
+    default: op
+  dynmap.debug.fillallblocks:
+    description: Allows /dynmap debugblocks - destructively fills a flat world with every block state, for testing Dynmap rendering
     default: op

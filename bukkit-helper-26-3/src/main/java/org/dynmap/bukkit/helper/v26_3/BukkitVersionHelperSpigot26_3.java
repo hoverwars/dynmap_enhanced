@@ -1,6 +1,7 @@
 package org.dynmap.bukkit.helper.v26_3;
 
 import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -446,6 +447,24 @@ public class BukkitVersionHelperSpigot26_3 extends BukkitVersionHelper {
 	@Override
 	public boolean useGenericCache() {
 		return true;
+	}
+	/**
+	 * Place the exact block state described by a DynmapBlockState.toString()-style string
+	 * ("minecraft:blockname[attrib=value,...]") at the given coordinates. Used by the
+	 * /dynmapdebug fillallblocks testing command to reproduce every block state Dynmap knows about.
+	 */
+	@Override
+	public boolean setBlockByStateName(World world, int x, int y, int z, String stateName) {
+		try {
+			BlockData data = Bukkit.createBlockData(stateName);
+			org.bukkit.block.Block block = world.getBlockAt(x, y, z);
+			// No physics: keeps state-dependent blocks (torches, doors placed without their other half, etc.)
+			// from popping off/breaking when their normal placement prerequisites aren't met.
+			block.setBlockData(data, false);
+			return true;
+		} catch (IllegalArgumentException iae) {
+			return false;
+		}
 	}
 
 }

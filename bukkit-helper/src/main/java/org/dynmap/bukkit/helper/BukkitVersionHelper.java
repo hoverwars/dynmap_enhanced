@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
+import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.dynmap.DynmapChunk;
 import org.dynmap.common.chunk.GenericChunkCache;
@@ -226,5 +227,25 @@ public abstract class BukkitVersionHelper {
     }
     public boolean useGenericCache() {
     	return false;
+    }
+    /**
+     * Test if given world is a flat/superflat world. Used to gate destructive debug/testing
+     * commands (e.g. filling the world with test blocks) to worlds that are safe to overwrite.
+     */
+    public boolean isFlatWorld(World world) {
+        try {
+            return world.getWorldType() == WorldType.FLAT;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+    /**
+     * Set the block at the given coordinates to the block state described by a
+     * DynmapBlockState.toString()-style string ("modid:blockname[attrib=value,...]").
+     * Used by debug/testing commands that need to place an exact block state.
+     * @return true if the block was placed, false if the state string couldn't be resolved
+     */
+    public boolean setBlockByStateName(World world, int x, int y, int z, String stateName) {
+        throw new UnsupportedOperationException("Direct block-state placement is not implemented for this server version");
     }
 }
