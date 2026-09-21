@@ -506,6 +506,11 @@ public class TexturePack {
      * @param buf - buffer to be set
      */
     public final void setTileARGB(int idx, int[] buf) {
+        // -1 means the tile was never resolved (e.g. the source texture the dynamic image (sign/chest/skin/...)
+        // patch was built from is missing from the resource pack). The GRID dynamic-image case already guards
+        // against this before calling in; the other cases (SIGN, CHEST, BIGCHEST, SKIN, SHULKER) don't, so
+        // guard here too instead of crashing the whole render job - just leave the tile as-is (blank).
+        if (idx < 0) return;
         if (idx >= tile_argb.length) {
             tile_argb = Arrays.copyOf(tile_argb, 3*idx/2);
         }

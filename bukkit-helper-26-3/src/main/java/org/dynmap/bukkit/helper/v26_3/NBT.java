@@ -1,4 +1,4 @@
-package org.dynmap.bukkit.helper.v26_1_2;
+package org.dynmap.bukkit.helper.v26_3;
 
 import org.dynmap.common.chunk.GenericBitStorage;
 import org.dynmap.common.chunk.GenericNBTCompound;

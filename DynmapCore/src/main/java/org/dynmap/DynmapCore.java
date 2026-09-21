@@ -1311,6 +1311,9 @@ public class DynmapCore implements DynmapCommonAPI {
         new CommandInfo("dynmap", "version", "Return version information"),
         new CommandInfo("dynmap", "dumpmemory", "Return mempry use information"),
         new CommandInfo("dynmap", "url", "Return confgured URL for Dynmap web"),
+        new CommandInfo("dynmap", "debugblocks", "Debug/testing: place every block state Dynmap knows about in a grid on your current flat world (asks for confirmation)."),
+        new CommandInfo("dynmap", "debugblocks", "confirm", "Confirm and execute a pending debugblocks request."),
+        new CommandInfo("dynmap", "debugblocks", "cancel", "Cancel a pending debugblocks request."),
         new CommandInfo("dmarker", "", "Manipulate map markers."),
         new CommandInfo("dmarker", "add", "<label>", "Add new marker with label <label> at current location (use double-quotes if spaces needed)."),
         new CommandInfo("dmarker", "add", "id:<id> <label>", "Add new marker with ID <id> at current location (use double-quotes if spaces needed)."),
@@ -2104,6 +2107,14 @@ public class DynmapCore implements DynmapCommonAPI {
         } else if(subcommand.equals("help")) {
             if(args.length == 2) {
                 return getSubcommandSuggestions(sender, "dynmap", args[1]);
+            }
+        } else if (subcommand.equals("debugblocks")) {
+            List<String> suggestions = Arrays.asList("confirm", "cancel");
+
+            if (args.length == 2) {
+                final String arg = args[1];
+                return suggestions.stream().filter(suggestion -> suggestion.startsWith(arg))
+                        .collect(Collectors.toList());
             }
         }
 

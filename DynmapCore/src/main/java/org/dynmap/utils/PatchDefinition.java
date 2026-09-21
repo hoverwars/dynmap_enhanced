@@ -221,30 +221,37 @@ public class PatchDefinition implements RenderPatch {
     }
     public boolean validate() {
         boolean good = true;
-        // Compute visible corners to see if we're inside cube
+        // Compute visible corners to see if we're inside cube. The 4 corners of the (u,v)-clipped
+        // patch are (umin,vmin), (umin,vmax), (umax,vmin), (umax,vmax) - the xu-term always uses
+        // u-limits and the xv-term always uses v-limits (see the (u,v) diagram in the class header).
+        // xx1/xx3 (and the y/z equivalents) used to pair the xu-term with vmin/vmax instead of
+        // umin/umax - a harmless-looking typo for the roughly-square, umin~=vmin/umax~=vmax patches
+        // every earlier block used, but one that miscomputes the corner entirely (and can spuriously
+        // fail validation) for a patch whose U and V clip ranges differ a lot, as MC 26.3's sign/
+        // hanging-sign chain-link geometry does.
         double xx0 = x0 + (xu - x0) * umin + (xv - x0) * vmin;
-        double xx1 = x0 + (xu - x0) * vmin + (xv - x0) * vmax;
+        double xx1 = x0 + (xu - x0) * umin + (xv - x0) * vmax;
         double xx2 = x0 + (xu - x0) * umax + (xv - x0) * vmin;
-        double xx3 = x0 + (xu - x0) * vmax + (xv - x0) * vmax;;
+        double xx3 = x0 + (xu - x0) * umax + (xv - x0) * vmax;
         if (outOfRange(xx0) || outOfRange(xx1) || outOfRange(xx2) || outOfRange(xx3)) {
             Log.verboseinfo(String.format("Invalid visible range xu=[%f:%f], xv=[%f:%f]", xx0, xx2, xx1, xx3));
-            good = false;        	
+            good = false;
         }
         double yy0 = y0 + (yu - y0) * umin + (yv - y0) * vmin;
-        double yy1 = y0 + (yu - y0) * vmin + (yv - y0) * vmax;
+        double yy1 = y0 + (yu - y0) * umin + (yv - y0) * vmax;
         double yy2 = y0 + (yu - y0) * umax + (yv - y0) * vmin;
-        double yy3 = y0 + (yu - y0) * vmax + (yv - y0) * vmax;;
+        double yy3 = y0 + (yu - y0) * umax + (yv - y0) * vmax;
         if (outOfRange(yy0) || outOfRange(yy1) || outOfRange(yy2) || outOfRange(yy3)) {
             Log.verboseinfo(String.format("Invalid visible range yu=[%f:%f], yv=[%f:%f]", yy0, yy2, yy1, yy3));
-            good = false;        	
+            good = false;
         }
         double zz0 = z0 + (zu - z0) * umin + (zv - z0) * vmin;
-        double zz1 = z0 + (zu - z0) * vmin + (zv - z0) * vmax;
+        double zz1 = z0 + (zu - z0) * umin + (zv - z0) * vmax;
         double zz2 = z0 + (zu - z0) * umax + (zv - z0) * vmin;
-        double zz3 = z0 + (zu - z0) * vmax + (zv - z0) * vmax;
+        double zz3 = z0 + (zu - z0) * umax + (zv - z0) * vmax;
         if (outOfRange(zz0) || outOfRange(zz1) || outOfRange(zz2) || outOfRange(zz3)) {
             Log.verboseinfo(String.format("Invalid visible range zu=[%f:%f], zv=[%f:%f]", zz0, zz2, zz1, zz3));
-            good = false;        	
+            good = false;
         }
         if (!good) {
         	Log.verboseinfo("Bad patch: " + this);

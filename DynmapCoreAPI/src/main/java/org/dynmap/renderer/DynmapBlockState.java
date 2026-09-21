@@ -31,6 +31,9 @@ public class DynmapBlockState {
     // List of block states (only defined on base block), indexed by stateIndex (null if single state base block)
     private DynmapBlockState[] states;
     private int stateLastIdx = 0;
+    // Index (relative to base) of the block's "default" state (only meaningful on base block state) - normally 0,
+    // but not guaranteed to be, since registration order (state index 0) isn't the same as the game's default state
+    private int defaultStateIdx = 0;
     private ConcurrentHashMap<String, DynmapBlockState> lookup;
     // Full name for state (base name, or base name[state name])
     private final String fullName;
@@ -116,10 +119,11 @@ public class DynmapBlockState {
     	private int legacyblkid;
     	private int matchflags;
     	private int lightblocked;
+    	private boolean isDefaultState;
     	public Builder() {
     		reset();
     	}
-    	public void reset() { base = null; blkname = null; statename = null; material = null; legacyblkid = -1; matchflags = 0; lightblocked = 0; }
+    	public void reset() { base = null; blkname = null; statename = null; material = null; legacyblkid = -1; matchflags = 0; lightblocked = 0; isDefaultState = false; }
     	public Builder setBaseState(DynmapBlockState blkbase) { this.base = blkbase; return this; }
     	public Builder setStateIndex(int sidx) { this.stateidx = sidx; return this; }
     	public Builder setBlockName(String blkname) { this.blkname = blkname; return this; }
@@ -134,6 +138,10 @@ public class DynmapBlockState {
         public Builder setSolid() { this.matchflags |= MATCH_SOLID; return this; }
         public Builder setBlocksLight() { this.lightblocked = 15; return this; }
         public Builder setAttenuatesLight(int levels) { this.lightblocked = levels; return this; }
+        /** Mark this state as the block's "default" state (i.e. Block.defaultBlockState()) - used to resolve
+         * bare block-name palette entries (no explicit properties) to the correct state, since state index 0
+         * (registration order) is not guaranteed to be the game's default state. */
+        public Builder setDefaultState() { this.isDefaultState = true; return this; }
         public DynmapBlockState build() {
         	DynmapBlockState bs = new DynmapBlockState(base, stateidx, blkname, statename, material, legacyblkid, lightblocked);
         	if ((matchflags & MATCH_AIR) != 0) bs.setAir();
@@ -142,6 +150,7 @@ public class DynmapBlockState {
         	if ((matchflags & MATCH_LEAVES) != 0) bs.setLeaves();
         	if ((matchflags & MATCH_SOLID) != 0) bs.setSolid();
            	if ((matchflags & MATCH_WATER) != 0) bs.addWaterBlock(blkname);
+           	if (isDefaultState) bs.baseState.defaultStateIdx = bs.stateIndex;
            	reset();	// Reset after build complete
            	return bs;
         }
@@ -285,6 +294,21 @@ public class DynmapBlockState {
             }
         }
         return (blk != null) ? blk : AIR;
+    }
+    /**
+     * Find the block's default state (Block.defaultBlockState() equivalent) by block name.
+     * Needed to resolve palette entries with no explicit properties (e.g. MC 1.21.11+'s bare-name
+     * encoding of a block at its default state), since state index 0 (registration order) is not
+     * guaranteed to be the block's actual default state.
+     * @param name - block name (modid:name)
+     * @return default block state, or AIR if not found
+     */
+    public static final DynmapBlockState getDefaultStateByName(String name) {
+        DynmapBlockState blk = getBaseStateByName(name);
+        if (blk.states != null) {
+            return blk.states[blk.defaultStateIdx];
+        }
+        return blk;
     }
     /**
      * Find block state by block name and state index

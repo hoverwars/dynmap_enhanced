@@ -38,3 +38,9 @@
 /fabric-1.16.2_client.launch
 /fabric-1.16.2_server.launch
 
+# Python
+**/__pycache__/
+
+# texture_gen backups (see tools/texture_gen/generate_texture_1.py --undo)
+DynmapCore/src/main/resources/texture_1.txt.bak
+DynmapCore/src/main/resources/models_1.txt.bak

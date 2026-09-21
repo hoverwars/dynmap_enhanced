@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1125,6 +1126,11 @@ public class DynmapPlugin extends JavaPlugin implements DynmapAPI {
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        // Bukkit-only debug/testing subcommand: handled directly here (not via DynmapCore.processCommand)
+        // since it needs raw Bukkit world-editing access that the platform-neutral core doesn't have.
+        if (cmd.getName().equalsIgnoreCase("dynmap") && (args.length > 0) && args[0].equalsIgnoreCase("debugblocks")) {
+            return DebugFillBlocksCommand.processCommand(this, core, sender, Arrays.copyOfRange(args, 1, args.length));
+        }
         DynmapCommandSender dsender;
         if(sender instanceof Player) {
             dsender = new BukkitPlayer((Player)sender);
